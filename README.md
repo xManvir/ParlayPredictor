@@ -39,7 +39,7 @@ Overtime, I want it to grow into a system that can anaylize player stats, weathe
 
 ## Why I’m Building This
 I love NFL parlays and data-driven predictions.  
-This project combines both — coding, data, and sports — into something that’s fun to build and practical to use.
+This project combines coding, data, and sports into something that’s fun to build and practical to use.
 
 ## Example Concept (future)
 > **CeeDee Lamb — Over 74.5 Receiving Yards**  
