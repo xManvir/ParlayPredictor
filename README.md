@@ -15,7 +15,7 @@ Overtime, I want it to grow into a system that can anaylize player stats, weathe
 
 ## Future Goals
 - Integrate real NFL data
-- Use machine learning to estime per leg hit probabilities
+- Use machine learning to estimate per leg hit probabilities
 - Combine leg probabilities to estimate parlay hit rate
 - Add charts and visuals
 
