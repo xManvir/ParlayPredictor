@@ -1,42 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Leg } from "../types/parlays";
 import { v4 as uuidv4 } from "uuid";
+import { saveLegs, loadLegs } from "../lib/storage";
 
 export default function ParlayForm() {
-    const [legs, setLegs] = useState<Leg[]>([]);
-    const [formData, setFormData] = useState({
-        playerName: "",
-        statType: "Passing Yards",
-        line: "",
-        comparator: "over",
+  const [legs, setLegs] = useState<Leg[]>([]);
+  const [formData, setFormData] = useState({
+    playerName: "",
+    statType: "Passing Yards",
+    line: "",
+    comparator: "over",
+  });
+  const [message, setMessage] = useState<string | null>(null);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const addLeg = () => {
+    if (!formData.playerName || !formData.line) return;
+
+    const newLeg: Leg = {
+      id: uuidv4(),
+      playerName: formData.playerName,
+      team: "N/A",
+      statType: formData.statType as Leg["statType"],
+      line: parseFloat(formData.line),
+      comparator: formData.comparator as Leg["comparator"],
+    };
+
+    setLegs([...legs, newLeg]);
+    setFormData({
+      playerName: "",
+      statType: "Passing Yards",
+      line: "",
+      comparator: "over",
     });
-    const [message, setMessage] = useState<string | null>(null);
+    saveLegs;
+    // setMessage("Leg Added");
+    // setTimeout(() => setMessage(null), 2000);
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value});
-    }
+  useEffect(() => {
+    const saved = loadLegs();
+    if (saved.length > 0) setLegs(saved);
+  }, []);
 
-    const addLeg = () => {
-        if (!formData.playerName || !formData.line) return;
-    
-        const newLeg: Leg = {
-            id: uuidv4(),
-            playerName: formData.playerName,
-            team: "N/A",
-            statType: formData.statType as Leg["statType"],
-            line: parseFloat(formData.line),
-            comparator: formData.comparator as Leg["comparator"],
-        };
+  useEffect(() => {
+    saveLegs(legs);
+  }, [legs]);
 
-        setLegs([...legs, newLeg]);
-        setFormData({playerName: "", statType: "Passing Yards", line: "", comparator: "over"})
-        setMessage("Leg Added");
-        setTimeout(() => setMessage(null), 2000);
-    }
-
-
-    return (
+  return (
     <div style={{ padding: "20px", maxWidth: "400px" }}>
       <h2>Add Parlay Leg</h2>
 
@@ -61,7 +78,11 @@ export default function ParlayForm() {
         onChange={handleChange}
       />
 
-      <select name="comparator" value={formData.comparator} onChange={handleChange}>
+      <select
+        name="comparator"
+        value={formData.comparator}
+        onChange={handleChange}
+      >
         <option value="over">Over</option>
         <option value="under">Under</option>
       </select>
@@ -69,7 +90,7 @@ export default function ParlayForm() {
       <button onClick={addLeg} style={{ marginLeft: "10px" }}>
         Add Leg
       </button>
-        {message && <p style={{ color: "green" }}>{message}</p>}
+      {message && <p style={{ color: "green" }}>{message}</p>}
 
       <hr />
 
@@ -82,6 +103,5 @@ export default function ParlayForm() {
         ))}
       </ul>
     </div>
-
   );
 }
