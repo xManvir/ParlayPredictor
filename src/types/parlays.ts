@@ -1,13 +1,13 @@
 export type Comparator = "over" | "under"
 
 export type StatType = 
-| "passingYards"
-| "passingTD"
-| "rushingYards"
-|"rushingTD"
-|"receivingYards"
-|"receivingTD"
-|"receptions";
+| "Passing Yards"
+| "Passing Touchdowns"
+| "Rushing Yards"
+| "Rushing Touchdowns"
+| "Receiving Yards"
+| "Receiving Touchdowns"
+| "Receptions";
 
 export interface Leg {
     id: string;
